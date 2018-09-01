@@ -1,19 +1,13 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" >
     <mat-toolbar-row>
-        <span>B2B Films</span>
-        <mat-icon  class="pull-right delete-icon">Home</mat-icon>
-        <span class="example-spacer"></span>
-
-
-
-
+        <span class="cursor-pointer" >
+            <span (click)="redirect()">B2B Films</span>
+            <mat-icon class="pull-right  home-icon">home</mat-icon>
+             <span class="example-spacer"></span>
+        </span>
 
     </mat-toolbar-row>
 </mat-toolbar>
-
-
-
-
 <div *ngIf="filmData" class="container">
     <div class="card">
         <div class="container-fliud">
@@ -22,19 +16,20 @@
                     <div class="preview-pic tab-content">
                         <div class="tab-pane active" id="pic-1">
                             <img *ngIf="filmData.poster!=='N/A'" src="{{filmData.poster}}"/>
-                            <img *ngIf="filmData.poster=='N/A'" src="../assets/images/not-image.png"/>
+                            <img *ngIf="filmData.poster =='N/A'" src="../../assets/images/not-image.png"/>
                         </div>
                     </div>
                     <div class="action">
-                        <a class="" href="{{filmData.website}}">Website</a>
+                        <span class="text-center website-text btn " *ngIf="filmData.website!=='N/A'"><a href="{{filmData.website}}">website</a></span>
                     </div>
                 </div>
                 <div class="details col-md-8">
                     <h3 class="product-title">{{filmData.title}} ({{filmData.year}})</h3>
                     <div class="rating">
                         <div class="stars">
-                            <span class="fa fa-star fa-lg checked"></span>
-                            <span>Imdb Rating {{filmData.imdbRating}}</span>
+                            <span *ngFor="let chechked of filmData.starChecked" class="fa fa-star fa-lg checked"> </span>
+                            <span *ngFor="let anChechked of filmData.starAnChecked" class="fa fa-star fa-lg "> </span>
+                            <span> Imdb Rating {{filmData.imdbRating}}</span>
                         </div>
                         <span class="review-no"></span>
                     </div>
@@ -48,9 +43,7 @@
                     <p class="vote"><strong>Director:</strong> {{filmData.director}}</p>
                     <p class="vote"><strong>Runtime:</strong> {{filmData.runtime}}</p>
                     <p class="vote"><strong>Title:</strong> {{filmData.title}}</p>
-                    <a class="btn btn-success" (click)="addFilm()">Add in My List</a>
                 </div>
-
             </div>
         </div>
     </div>

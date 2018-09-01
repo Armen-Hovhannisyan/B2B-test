@@ -1,0 +1,105 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <span class="cursor-pointer">
+            <span>B2B Films</span>
+            <mat-icon class="pull-right  home-icon">home</mat-icon>
+             <span class="example-spacer"></span>
+        </span>
+        <span class="example-spacer"></span>
+        <form class="example-form">
+            <mat-form-field class="example-full-width">
+                <input type="text" placeholder="Film Name" aria-label="Number" matInput [formControl]="myControl"
+                       [matAutocomplete]="auto">
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                        {{option}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            <button mat-button (click)="search()">Search</button>
+        </form>
+    </mat-toolbar-row>
+</mat-toolbar>
+<div *ngIf="success_message" class="message-block success-block">{{success_message}}</div>
+<div *ngIf="error_message" class="message-block error-block">{{error_message}}</div>
+
+
+<div *ngIf="filmData" class="container">
+    <div class="card">
+        <mat-icon (click)="remove()" class="pull-right  home-icon cursor-pointer">remove</mat-icon>
+        <div class="container-fliud">
+            <div class="wrapper row">
+                <div class="preview col-md-4">
+                    <div class="preview-pic tab-content">
+                        <div class="tab-pane active" id="pic-1">
+                            <img *ngIf="filmData.poster!=='N/A'" src="{{filmData.poster}}"/>
+                            <img *ngIf="filmData.poster=='N/A'" src="../../assets/images/not-image.png"/>
+                        </div>
+                    </div>
+                    <div class="action">
+                        <span class="website-text btn" *ngIf="filmData.website!=='N/A'"><a href="{{filmData.website}}">website</a></span>
+                    </div>
+                </div>
+                <div class="details col-md-8">
+                    <h3 class="product-title">{{filmData.title}} ({{filmData.year}})</h3>
+                    <div class="rating">
+                        <div class="stars">
+                            <span *ngFor="let chechked of filmData.starChecked" class="fa fa-star fa-lg checked"> </span>
+                            <span *ngFor="let anChechked of filmData.starAnChecked" class="fa fa-star fa-lg "> </span>
+                            <span> Imdb Rating {{filmData.imdbRating}}</span>
+                        </div>
+                        <span class="review-no"></span>
+                    </div>
+                    <p class="product-description"><strong>Description:</strong> {{filmData.plot}}</p>
+                    <h4 class="price">BoxOffice: <span>{{filmData.box_office}}</span></h4>
+                    <p class="vote"><strong>Actors:</strong> {{filmData.actors}}</p>
+                    <p class="vote"><strong>Awards:</strong> {{filmData.awards}}</p>
+                    <p class="vote"><strong>Country:</strong> {{filmData.country}}</p>
+                    <p class="vote"><strong>DVD:</strong> {{filmData.dvd}}</p>
+                    <p class="vote"><strong>Language:</strong> {{filmData.language}}</p>
+                    <p class="vote"><strong>Director:</strong> {{filmData.director}}</p>
+                    <p class="vote"><strong>Runtime:</strong> {{filmData.runtime}}</p>
+                    <p class="vote"><strong>Title:</strong> {{filmData.title}}</p>
+                    <a class="btn btn-success" (click)="addFilm()">Add in My List</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="films.length>0" class="container">
+    <div class="row">
+        <h2>Films</h2>
+        <div class="searchable-container">
+            <div *ngFor="let film of films">
+                <div class=" col-xs-12 col-sm-6 col-md-6 col-lg-6 films-block ">
+                    <mat-icon (click)="deleteFilm(film.id)" class="pull-right delete-icon">delete</mat-icon>
+                    <div class="info-block block-info clearfix">
+                        <div class="square-box pull-left">
+                            <img *ngIf="film.poster!=='N/A'" src="{{film.poster}}"/>
+                            <img *ngIf="film.poster=='N/A'" src="../../assets/images/not-image.png"/>
+                            <span *ngIf="film.website!=='N/A'"><a href="{{film.website}}">website</a></span>
+                        </div>
+                        <div class="film-info" >
+                            <h2 *ngIf="film.title">{{film.title}} ({{film.year}})</h2>
+                            <p *ngIf="film.plot" class="product-description"><strong>Description:</strong>{{film.plot}}</p>
+                        </div>
+                        <a [routerLink]="['/film/'+film.id]" class="btn btn-success  ">All Info</a>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+

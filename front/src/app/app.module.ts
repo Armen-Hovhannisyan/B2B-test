@@ -6,11 +6,13 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MaterialModule} from './material.module';
 import {HttpClientModule} from '@angular/common/http';
 import {FilmComponent} from './film/film.component'
+import {HomeComponent} from './home/home.component'
 
 @NgModule({
     declarations: [
         AppComponent,
-        FilmComponent
+        FilmComponent,
+        HomeComponent
     ],
     imports: [
         BrowserModule,
@@ -18,12 +20,11 @@ import {FilmComponent} from './film/film.component'
         BrowserAnimationsModule,
         MaterialModule,
         HttpClientModule,
-        // RouterModule.forRoot(routes, {useHash: true}),
     ],
     providers: [
 
     ],
-    bootstrap: []
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }
