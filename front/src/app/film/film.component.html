@@ -1,0 +1,68 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <span>B2B Films</span>
+        <mat-icon  class="pull-right delete-icon">Home</mat-icon>
+        <span class="example-spacer"></span>
+
+
+
+
+
+    </mat-toolbar-row>
+</mat-toolbar>
+
+
+
+
+<div *ngIf="filmData" class="container">
+    <div class="card">
+        <div class="container-fliud">
+            <div class="wrapper row">
+                <div class="preview col-md-4">
+                    <div class="preview-pic tab-content">
+                        <div class="tab-pane active" id="pic-1">
+                            <img *ngIf="filmData.poster!=='N/A'" src="{{filmData.poster}}"/>
+                            <img *ngIf="filmData.poster=='N/A'" src="../assets/images/not-image.png"/>
+                        </div>
+                    </div>
+                    <div class="action">
+                        <a class="" href="{{filmData.website}}">Website</a>
+                    </div>
+                </div>
+                <div class="details col-md-8">
+                    <h3 class="product-title">{{filmData.title}} ({{filmData.year}})</h3>
+                    <div class="rating">
+                        <div class="stars">
+                            <span class="fa fa-star fa-lg checked"></span>
+                            <span>Imdb Rating {{filmData.imdbRating}}</span>
+                        </div>
+                        <span class="review-no"></span>
+                    </div>
+                    <p class="product-description">{{filmData.plot}}</p>
+                    <h4 class="price">BoxOffice: <span>{{filmData.box_office}}</span></h4>
+                    <p class="vote"><strong>Actors:</strong> {{filmData.actors}}</p>
+                    <p class="vote"><strong>Awards:</strong> {{filmData.awards}}</p>
+                    <p class="vote"><strong>Country:</strong> {{filmData.country}}</p>
+                    <p class="vote"><strong>DVD:</strong> {{filmData.dvd}}</p>
+                    <p class="vote"><strong>Language:</strong> {{filmData.language}}</p>
+                    <p class="vote"><strong>Director:</strong> {{filmData.director}}</p>
+                    <p class="vote"><strong>Runtime:</strong> {{filmData.runtime}}</p>
+                    <p class="vote"><strong>Title:</strong> {{filmData.title}}</p>
+                    <a class="btn btn-success" (click)="addFilm()">Add in My List</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
