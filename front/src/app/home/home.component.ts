@@ -88,7 +88,7 @@ export class HomeComponent implements OnInit {
 
     addFilm() {
         if (!this.filmData) {
-            this.error_message = 'film requered';
+            this.error_message = 'film was`nt added';
             setTimeout(() => {
                 this.error_message = '';
             },2500)
