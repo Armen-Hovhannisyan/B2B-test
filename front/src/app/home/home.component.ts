@@ -11,37 +11,62 @@ import {ApiService} from '../api.service';
     styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-    public filmData: any='';
+    public filmData: any = '';
     public searchValue: string = '';
     public films: any = [];
     public films_name: any = [];
-    public success_message:string = '';
-    public error_message:string = '';
+    public success_message: string = '';
+    public error_message: string = '';
     public myControl = new FormControl();
     public filteredOptions: Observable<string[]>;
-    constructor(private http: HttpClient, private apiService: ApiService) {}
+
+    constructor(private http: HttpClient, private apiService: ApiService) {
+    }
+
     getFilms() {
         this.apiService.getFilms().subscribe(res => {
             this.films = res['films'];
-            this.films_name=res['films_name'];
         });
     }
+
     ngOnInit() {
         this.getFilms()
+        this.searchAutoComplete()
+    }
+
+    searchAutoComplete() {
         this.filteredOptions = this.myControl.valueChanges.pipe(
             startWith(''),
             map(value => this._filter(value))
         );
     }
+
+    keyUp() {
+        this.apiService.searchFilms(this.searchValue).subscribe(request => {
+            if (request['Response'] == 'True') {
+                let title = request['Title']
+                if (this.films_name.indexOf(title)==-1) {
+                    this.films_name.push(title)
+                    this.searchAutoComplete()
+                }
+            } else {
+                this.films_name = [];
+            }
+        })
+
+    }
+
     private _filter(value: string): string[] {
         const filterValue = value.toLowerCase();
         this.searchValue = value
         return this.films_name.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
     }
+
     search() {
+        this.films_name = [];
         this.filmData = null
         this.apiService.searchFilms(this.searchValue).subscribe(request => {
-            if(request['Response']=='True'){
+            if (request['Response'] == 'True') {
                 this.filmData = {
                     actors: request['Actors'],
                     awards: request['Awards'],
@@ -65,33 +90,35 @@ export class HomeComponent implements OnInit {
                     imdbVotes: request['imdbVotes'],
                     ratings: request['Ratings'],
                 }
-                if(this.filmData['imdbRating'] !=='N/A'){
-                    let reting=this.filmData['imdbRating']/10*10
-                    let count=Math.round(reting);
+                if (this.filmData['imdbRating'] !== 'N/A') {
+                    let reting = this.filmData['imdbRating'] / 10 * 10
+                    let count = Math.round(reting);
                     var starChecked = new Array(count);
-                    this.filmData.starChecked=starChecked
-                    let starAnCheckedCount=new Array(10-count)
-                    this.filmData.starAnChecked=starAnCheckedCount;
-                }else{
-                    let starAnCheckedCount=new Array(10)
-                    this.filmData.starAnChecked=starAnCheckedCount;
+                    this.filmData.starChecked = starChecked
+                    let starAnCheckedCount = new Array(10 - count)
+                    this.filmData.starAnChecked = starAnCheckedCount;
+                } else {
+                    let starAnCheckedCount = new Array(10)
+                    this.filmData.starAnChecked = starAnCheckedCount;
                 }
 
-            }else{
+            } else {
                 this.error_message = request['Error'];
                 setTimeout(() => {
                     this.error_message = '';
                 }, 2500);
             }
+            this.searchValue = '';
         })
     }
 
     addFilm() {
+
         if (!this.filmData) {
             this.error_message = 'film was`nt added';
             setTimeout(() => {
                 this.error_message = '';
-            },2500)
+            }, 2500)
             return false
         }
         this.apiService.addFilm(this.filmData).subscribe(res => {
@@ -102,13 +129,13 @@ export class HomeComponent implements OnInit {
                 this.success_message = res['message'];
                 setTimeout(() => {
                     this.success_message = '';
-                },2500)
+                }, 2500)
             } else {
                 this.filmData = ''
                 this.error_message = res['message'];
                 setTimeout(() => {
                     this.error_message = '';
-                },2500)
+                }, 2500)
             }
         })
     }
@@ -120,16 +147,17 @@ export class HomeComponent implements OnInit {
                 this.success_message = res['message'];
                 setTimeout(() => {
                     this.success_message = '';
-                },2500)
+                }, 2500)
             } else {
                 this.error_message = res['message'];
                 setTimeout(() => {
                     this.error_message = '';
-                },2500)
+                }, 2500)
             }
         })
     }
-    remove(){
+
+    remove() {
         this.filmData = ''
     }
 }

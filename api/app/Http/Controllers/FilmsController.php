@@ -11,8 +11,7 @@ class FilmsController extends Controller
     {
         $films = Films::get();
         if ($films) {
-            $filmsName = Films::pluck('title');
-            return response()->json(['success' => true, 'films' => $films, 'films_name' => $filmsName]);
+            return response()->json(['success' => true, 'films' => $films]);
         }
         return response()->json(['success' => false]);
     }
